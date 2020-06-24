@@ -10,12 +10,17 @@ from PIL import ImageEnhance
 def get_coords(i, j):
     top = 412           
     left = 12
-    size = 117      # The top, left, and size were manually calculated and calibrated
+    size = 117      # The top, left, and size were manually calculated and calibrated. They might need to be adjusted for diffrent devices
     box_top = top + (i*size)
     box_left = left + (j*size)
     box_bottom = box_top + size
     box_right = box_left + size
     return (box_left, box_top, box_right, box_bottom)
+
+# Get cropped image of a box in the sudoku grid
+def get_box(image, i, j):
+    box = image.crop(get_coords(i, j))
+    return box
 
 # Enhance / Process Image for OCR (The output/returned image will only contain the numbers in black color)
 def process_image(image):
@@ -24,11 +29,6 @@ def process_image(image):
     image = ImageEnhance.Contrast(image).enhance(10)
     image = ImageEnhance.Sharpness(image).enhance(2)
     return image
-
-# Get cropped image of a box in the sudoku grid
-def get_box(image, i, j):
-    box = image.crop(get_coords(i, j))
-    return box
 
 # Convert the Sudoku Grid Image to a 2D List
 def get_grid_from_image(image):
